@@ -2,8 +2,8 @@
 
 require('dotenv').config();
 
-// const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN
-const PAGE_ACCESS_TOKEN = 'EAAKYcI4QRp8BAG0SjBU6e8bRHGVmgvCBNVnmPWXz70eFh4p1sG1nOgOF2OZBrtqtCfYikWqAsh5rD2zVRVZBtZCeREovM66P5O7UZCtmVOTlIybg6CkXQv406nXRRIC7XVyLDkKzQGyupHjANVlOAvyYsVEYtfkm64ZARtZCiWwQZDZD'
+const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN
+
 // Imports dependencies and set up http server
 const
   request = require('request'),
