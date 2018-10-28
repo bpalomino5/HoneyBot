@@ -90,19 +90,26 @@ function handleMessage(sender_psid, received_message) {
 
   // Check if the message contains text
   if (received_message.text) {
+    let nlp = received_message.nlp;
 
     // check intent is here and is confident
-    console.log(received_message.nlp);
-    // const item = firstEntity(message.nlp, 'item');
-    // if (item && item[0].confidence > 0.8) {
-    //   sendResponse('Hi there!');
-    // } else { 
-    //   // default logic
-    // }
-
-    // Create the payload for a basic text message
-    response = {
-      "text": `You sent the message: "${received_message.text}".`
+    const intent = firstEntity(nlp, 'intent');
+    if (intent && intent.confidence > 0.8 && intent.value = 'notify') {
+      // check for proper structure - item, person
+      if (nlp.entities.item && nlp.entities.item.confidence > 0.8){
+        console.log(nlp.entities.item.value)
+      }
+      if (nlp.entities.item && nlp.entities.person.confidence > 0.8){
+        console.log(nlp.entities.person.value)
+      }
+      response = {
+        "text" : "Got it, sending now!"
+      }
+    } else { 
+      // Create the payload for a basic text message
+      response = {
+        "text": `You sent the message: "${received_message.text}".`
+      }
     }
   }
 
