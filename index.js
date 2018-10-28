@@ -92,7 +92,7 @@ function handleMessage(sender_psid, received_message) {
   if (received_message.text) {
 
     // check intent is here and is confident
-    console.log(message.nlp);
+    console.log(received_message.nlp);
     // const item = firstEntity(message.nlp, 'item');
     // if (item && item[0].confidence > 0.8) {
     //   sendResponse('Hi there!');
