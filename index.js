@@ -93,8 +93,9 @@ function handleMessage(sender_psid, received_message) {
     let nlp = received_message.nlp;
 
     // check intent is here and is confident
-    const intent = firstEntity(nlp, 'intent');
-    if (intent && nlp.entities.intent.confidence > 0.8 && nlp.entities.intent.value === 'notify') {
+    // const intent = firstEntity(nlp, 'intent');
+    console.log(nlp.entities);
+    if (nlp.entities.intent && nlp.entities.intent.confidence > 0.8 && nlp.entities.intent.value === 'notify') {
       // check for proper structure - item, person
       if (nlp.entities.item && nlp.entities.item.confidence > 0.8){
         console.log(nlp.entities.item.value)
