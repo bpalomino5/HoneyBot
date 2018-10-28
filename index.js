@@ -3,6 +3,9 @@
 require('dotenv').config();
 
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN
+const BrandonID = process.env.BrandonID
+const ElaineID = process.env.ElaineID
+
 
 // Imports dependencies and set up http server
 const
@@ -86,30 +89,44 @@ function firstEntity(nlp, name) {
 
 // Handles messages events
 function handleMessage(sender_psid, received_message) {
-  let response;
+  let response = {
+        "text": "Sorry I did not understand"
+      };
 
   // Check if the message contains text
   if (received_message.text) {
     let nlp = received_message.nlp;
 
     // check intent is here and is confident
-    // const intent = firstEntity(nlp, 'intent');
-    console.log(nlp.entities);
     if (nlp.entities.intent && nlp.entities.intent[0].confidence > 0.8 && nlp.entities.intent[0].value === 'notify') {
+      // default response to sender
+      
       // check for proper structure - item, person
       if (nlp.entities.item && nlp.entities.item[0].confidence > 0.8){
-        console.log(nlp.entities.item[0].value)
-      }
-      if (nlp.entities.item && nlp.entities.person[0].confidence > 0.8){
-        console.log(nlp.entities.person[0].value)
-      }
-      response = {
-        "text" : "Got it, sending now!"
-      }
-    } else { 
-      // Create the payload for a basic text message
-      response = {
-        "text": `You sent the message: "${received_message.text}".`
+        response = {
+          "text" : "Got it, sending now!"
+        }
+        
+        let item = nlp.entities.item[0].value
+        if (item === "food") {
+          message = "Honey I'm hungry buy me food!"
+        } else if(item === "money"){
+          message = "Honey I need money..."
+        } else if(item === 'love'){
+          message = "I love you Honey!"
+        }
+
+        if (nlp.entities.person && nlp.entities.person[0].confidence > 0.8){
+          let person = nlp.entities.person[0].value
+          if (person === "honey"){
+            callSendAPI(ElaineID, { "text": message })
+          } 
+          else {
+            response = {
+              "text": 'Nope!'
+            }
+          }
+        }
       }
     }
   }
