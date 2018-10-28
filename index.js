@@ -79,12 +79,26 @@ app.get('/webhook', (req, res) => {
   }
 });
 
+
+function firstEntity(nlp, name) {
+  return nlp && nlp.entities && nlp.entities[name] && nlp.entities[name][0];
+}
+
 // Handles messages events
 function handleMessage(sender_psid, received_message) {
   let response;
 
   // Check if the message contains text
   if (received_message.text) {
+
+    // check intent is here and is confident
+    console.log(message.nlp);
+    // const item = firstEntity(message.nlp, 'item');
+    // if (item && item[0].confidence > 0.8) {
+    //   sendResponse('Hi there!');
+    // } else { 
+    //   // default logic
+    // }
 
     // Create the payload for a basic text message
     response = {
@@ -131,7 +145,7 @@ function callSendAPI(sender_psid, response) {
     "json": request_body
   }, (err, res, body) => {
     if (!err) {
-      console.log('message sent! ', PAGE_ACCESS_TOKEN)
+      console.log('message sent! ')
     } else {
       console.error("Unable to send message:" + err);
     }
