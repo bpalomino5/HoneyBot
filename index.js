@@ -95,13 +95,13 @@ function handleMessage(sender_psid, received_message) {
     // check intent is here and is confident
     // const intent = firstEntity(nlp, 'intent');
     console.log(nlp.entities);
-    if (nlp.entities.intent && nlp.entities.intent.confidence > 0.8 && nlp.entities.intent.value === 'notify') {
+    if (nlp.entities.intent && nlp.entities.intent[0].confidence > 0.8 && nlp.entities.intent[0].value === 'notify') {
       // check for proper structure - item, person
-      if (nlp.entities.item && nlp.entities.item.confidence > 0.8){
-        console.log(nlp.entities.item.value)
+      if (nlp.entities.item && nlp.entities.item[0].confidence > 0.8){
+        console.log(nlp.entities.item[0].value)
       }
-      if (nlp.entities.item && nlp.entities.person.confidence > 0.8){
-        console.log(nlp.entities.person.value)
+      if (nlp.entities.item && nlp.entities.person[0].confidence > 0.8){
+        console.log(nlp.entities.person[0].value)
       }
       response = {
         "text" : "Got it, sending now!"
