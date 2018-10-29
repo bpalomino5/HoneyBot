@@ -192,8 +192,10 @@ function handleMessage(sender_psid, received_message) {
       sendTextMessage(sender_psid, "Sorry, I do not understand.")
     }
   } else if (received_message.attachments) {
-    let coordinates = received_message.attachments.payload.coordinates;
-    console.log(coordinates);
+    if (received_message.attachments[0].type === 'location'){
+      let coordinates = received_message.attachments[0].payload.coordinates;
+      console.log(coordinates);
+    }
   }
 }
 
