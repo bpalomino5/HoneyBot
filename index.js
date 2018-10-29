@@ -124,24 +124,34 @@ function queryYelpFood(preferences) {
   });
 }
 
-async function handleItem(item, sender_psid){
-  let message = ''
-  if (item === 'food') message = "Honey I'm hungry buy me food"
-  else if (item === 'money') message = "Honey I need money..."
-  else if (item === 'love') message = "I love you Honey!"
-  else if (item === 'yelpFood'){ // Special case
+async function handleItem(item, sender_psid, type=""){
+  if (type === 'isHungry') {
     let data = await queryYelpFood(searchRequest);
-    sendWithListTemplate(BrandonID, data);
+    sentTextMessage(sender_psid, "Here is your best choices!")
+    sendWithListTemplate(sender_psid, data);
   }
 
-  if (sender_psid === BrandonID){ // send to Elaine
-    sendTextMessage(BrandonID, "Got it, sending now");
-    sendTextMessage(BrandonID, message);
-  } else if (sender_psid === ElaineID){
-    sendTextMessage(ElaineID, "Got it, sending now");
-    sendTextMessage(BrandonID, message);
-  } else {
-    sendTextMessage(sender_psid, "Sorry, I don't know who to message.");
+  if (type === 'payload' || type === 'notify'){
+    let message = ''
+    if (item === 'food') message = "Honey I'm hungry buy me food"
+    else if (item === 'money') message = "Honey I need money..."
+    else if (item === 'love') message = "I love you Honey!"
+    
+    if (item === 'yelpFood'){ // Special case
+      let data = await queryYelpFood(searchRequest);
+      sentTextMessage(sender_psid, "Here is your best choices!")
+      sendWithListTemplate(sender_psid, data);
+    } else {
+      if (sender_psid === BrandonID){ // send to Elaine
+        sendTextMessage(BrandonID, "Got it, sending now");
+        sendTextMessage(BrandonID, message);
+      } else if (sender_psid === ElaineID){
+        sendTextMessage(ElaineID, "Got it, sending now");
+        sendTextMessage(BrandonID, message);
+      } else {
+        sendTextMessage(sender_psid, "Sorry, I don't know who to message.");
+      }
+    }
   }
 }
 
@@ -149,7 +159,7 @@ async function handleItem(item, sender_psid){
 function handleMessage(sender_psid, received_message) {
   if (received_message.quick_reply) {
     let payload = received_message.quick_reply.payload;
-    handleItem(payload, sender_psid)
+    handleItem(payload, sender_psid, 'payload')
   }
   
   else if (received_message.text) {
@@ -159,15 +169,21 @@ function handleMessage(sender_psid, received_message) {
     const person = searchNLP(nlp, 'person');
     const item = searchNLP(nlp, 'item');
 
-    if (intent && intent.confidence > 0.8 && intent.value === 'notify'){
-      if (item && item.confidence > 0.8){
-        if (person && person.confidence > 0.8) {
-          handleItem(item.value, sender_psid);
+    if (intent && intent.confidence > 0.8){
+      if (intent.value === 'notify') {
+        if (item && item.confidence > 0.8){
+          if (person && person.confidence > 0.8) {
+            handleItem(item.value, sender_psid, 'notify');
+          } else {
+            sendTextMessage(sender_psid, "Sorry, I don't know who to message.");
+          }
         } else {
-          sendTextMessage(sender_psid, "Sorry, I don't know who to message.");
+          sendTextMessage(sender_psid, "Sorry, I don't know what you want.")
         }
-      } else {
-        sendTextMessage(sender_psid, "Sorry, I don't know what you want.")
+      } else if (intent.value === 'isHungry'){
+        if (item && item.confidence > 0.8) {
+          handleItem(item.value, sender_psid, 'isHungry');
+        }
       }
     } else if (greetings && greetings.confidence > 0.8) {
       sendTextWithQuickReplies(sender_psid, "Hi, how can I help?")
@@ -205,8 +221,6 @@ function sendWithListTemplate(recipientID, data) {
         default_action: {
           type: 'web_url',
           url: item.url
-          // messenger_extensions: true,
-        //   webview_height_ratio: "tall"
         }
     });
   })
@@ -226,8 +240,6 @@ function sendWithListTemplate(recipientID, data) {
       }
     }
   };
-
-  console.log(messageData.message.attachment.payload.elements);
 
   callSendAPI(messageData);
 }
