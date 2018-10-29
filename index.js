@@ -182,7 +182,8 @@ function handleMessage(sender_psid, received_message) {
         }
       } else if (intent.value === 'isHungry'){
         if (item && item.confidence > 0.8) {
-          handleItem(item.value, sender_psid, 'isHungry');
+          promptForLocation(sender_psid, "Select a location.");
+          // handleItem(item.value, sender_psid, 'isHungry');
         }
       }
     } else if (greetings && greetings.confidence > 0.8) {
@@ -190,6 +191,9 @@ function handleMessage(sender_psid, received_message) {
     } else {
       sendTextMessage(sender_psid, "Sorry, I do not understand.")
     }
+  } else if (received_message.attachments) {
+    let coordinates = received_message.attachments.payload.coordinates;
+    console.log(coordinates);
   }
 }
 
@@ -238,6 +242,24 @@ function sendWithListTemplate(recipientID, data) {
           elements: elements
         }
       }
+    }
+  };
+
+  callSendAPI(messageData);
+}
+
+function promptForLocation(recipientID, messageText) {
+  var messageData = {
+    recipient: {
+      id: recipientID
+    },
+    message: {
+      text: messageText,
+      quick_replies: [
+        {
+          content_type: 'location'
+        }
+      ]
     }
   };
 
