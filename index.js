@@ -131,8 +131,9 @@ function handleItem(item, sender_psid){
   else if (item === 'money') message = "Honey I need money..."
   else if (item === 'love') message = "I love you Honey!"
   else if (item === 'yelpFood'){ // Special case
-    message = queryYelpFood(searchRequest)
-    console.log(message);
+    queryYelpFood(searchRequest).then(response => {
+      console.log(response);
+    })
   }
 
   if (sender_psid === BrandonID){ // send to Elaine
