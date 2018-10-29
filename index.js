@@ -21,7 +21,7 @@ const searchRequest = {
   term: 'restaurants',
   sort_by: 'best_match',
   open_now: true,
-  limit: 5
+  limit: 4
 }
 
 const client = yelp.client(YELP_API_KEY)
@@ -205,7 +205,7 @@ function sendWithListTemplate(recipientID, data) {
         default_action: {
           type: 'web_url',
           url: item.url,
-          messenger_extensions: false,
+          messenger_extensions: true,
           webview_height_ratio: "tall"
         }
     });
