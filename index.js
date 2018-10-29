@@ -30,7 +30,7 @@ app.post('/webhook', (req, res) => {
 
       // Gets the body of the webhook event
       let webhook_event = entry.messaging[0];
-      // console.log(webhook_event);
+      console.log(webhook_event);
 
       // Get the sender PSID
       let sender_psid = webhook_event.sender.id;
@@ -93,7 +93,7 @@ function searchNLP(nlp, name) {
 // Handles messages events
 function handleMessage(sender_psid, received_message) {
   // Check if the message contains text
-  console.log(received_message.payload);
+  console.log(received_message);
   if (received_message.text) {
     let nlp = received_message.nlp;
     const intent = searchNLP(nlp, 'intent');
