@@ -201,13 +201,13 @@ function sendWithListTemplate(recipientID, data) {
       {
         title: item.name,
         subtitle: item.categories[0].title,
-        image_url: item.image_url
-        // default_action: {
-        //   type: 'web_url',
-        //   url: item.url,
-        //   messenger_extensions: true,
+        image_url: item.image_url,
+        default_action: {
+          type: 'web_url',
+          url: item.url,
+          messenger_extensions: true,
         //   webview_height_ratio: "tall"
-        // }
+        }
     });
   })
 
