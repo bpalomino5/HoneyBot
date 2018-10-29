@@ -204,8 +204,8 @@ function sendWithListTemplate(recipientID, data) {
         image_url: item.image_url,
         default_action: {
           type: 'web_url',
-          url: item.url,
-          messenger_extensions: true,
+          url: item.url
+          // messenger_extensions: true,
         //   webview_height_ratio: "tall"
         }
     });
