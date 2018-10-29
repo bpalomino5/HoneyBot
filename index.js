@@ -5,17 +5,41 @@ require('dotenv').config();
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN
 const BrandonID = process.env.BrandonID
 const ElaineID = process.env.ElaineID
+const YELP_API_KEY = process.env.YELP_API_KEY
 
 
 // Imports dependencies and set up http server
 const
+  yelp = require('yelp-fusion'),
   request = require('request'),
   express = require('express'),
   bodyParser = require('body-parser'),
   app = express().use(bodyParser.json()); // creates express http server
 
+const searchRequest = {
+  location: 'Rancho Cucamonga, CA',
+  term: 'restaurants',
+  sort_by: 'best_match',
+  open_now: true,
+  limit: 5
+}
+
+const client = yelp.client(YELP_API_KEY)
+
+
 // Sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
+
+// app.get('/', (req,res) => {
+//   client.search(searchRequest).then(response =>{
+//     const firstResult = response.jsonBody.businesses[0];
+//     console.log(firstResult.name, firstResult.url);
+//     // const prettyJson = JSON.stringify(firstResult);
+//     // console.log(prettyJson);
+//   }).catch(e => {
+//     console.log(e);
+//   });
+// });
 
 // Creates the endpoint for our webhook 
 app.post('/webhook', (req, res) => {  
@@ -90,11 +114,23 @@ function searchNLP(nlp, name) {
   }
 }
 
+function queryYelpFood(preferences) {
+  client.search(preferences).then(response =>{
+    const firstResult = response.jsonBody.businesses[0];
+    return firstResult.name
+  }).catch(e => {
+    console.log(e);
+  });
+}
+
 function handleItem(item, sender_psid){
   let message = ''
   if (item === 'food') message = "Honey I'm hungry buy me food"
   else if (item === 'money') message = "Honey I need money..."
   else if (item === 'love') message = "I love you Honey!"
+  else if (item === 'yelpFood'){ // Special case
+    message = queryYelpFood(searchRequest)
+  }
 
   if (sender_psid === BrandonID){ // send to Elaine
     sendTextMessage(BrandonID, "Got it, sending now");
@@ -178,6 +214,11 @@ function sendTextWithQuickReplies(recipientID, messageText){
           content_type: 'text',
           title: 'send affection',
           payload: 'love'
+        },
+        {
+          content_type: 'text',
+          title: 'find food',
+          payload: 'yelpFood'
         }
       ]
     }
