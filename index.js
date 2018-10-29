@@ -206,7 +206,7 @@ function sendWithListTemplate(recipientID, data) {
           type: 'web_url',
           url: item.url,
           messenger_extensions: false,
-          webview_height_ratio: tall
+          webview_height_ratio: "tall"
         }
     });
   })
