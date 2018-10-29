@@ -200,14 +200,14 @@ function sendWithListTemplate(recipientID, data) {
     elements.push(
       {
         title: item.name,
-        subtitle: item.categories[0].title,
-        image_url: item.image_url,
-        default_action: {
-          type: 'web_url',
-          url: item.url,
-          messenger_extensions: true,
-          webview_height_ratio: "tall"
-        }
+        subtitle: item.categories[0].title
+        // image_url: item.image_url,
+        // default_action: {
+        //   type: 'web_url',
+        //   url: item.url,
+        //   messenger_extensions: true,
+        //   webview_height_ratio: "tall"
+        // }
     });
   })
 
@@ -229,7 +229,7 @@ function sendWithListTemplate(recipientID, data) {
 
   console.log(messageData.message.attachment.payload.elements);
 
-  callSendAPI(JSON.stringify(messageData));
+  callSendAPI(messageData);
 }
 
 function sendTextWithQuickReplies(recipientID, messageText){
