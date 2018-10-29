@@ -17,7 +17,6 @@ const
   app = express().use(bodyParser.json()); // creates express http server
 
 const searchRequest = {
-  location: 'Rancho Cucamonga, CA',
   term: 'restaurants',
   sort_by: 'best_match',
   open_now: true,
@@ -124,13 +123,13 @@ function queryYelpFood(preferences) {
   });
 }
 
-async function handleItem(item, sender_psid, type=""){
-  if (type === 'isHungry') {
-    let data = await queryYelpFood(searchRequest);
-    sendTextMessage(sender_psid, "Here is your best choices!")
-    sendWithListTemplate(sender_psid, data);
-  }
+async function sendYelpResults(sender_psid, preferences){
+  let data = await queryYelpFood(preferences);
+  sendTextMessage(sender_psid, "Here is your best choices!")
+  sendWithListTemplate(sender_psid, data);
+}
 
+function handleItem(item, sender_psid, type=""){
   if (type === 'payload' || type === 'notify'){
     let message = ''
     if (item === 'food') message = "Honey I'm hungry buy me food"
@@ -138,9 +137,7 @@ async function handleItem(item, sender_psid, type=""){
     else if (item === 'love') message = "I love you Honey!"
     
     if (item === 'yelpFood'){ // Special case
-      let data = await queryYelpFood(searchRequest);
-      sendTextMessage(sender_psid, "Here is your best choices!")
-      sendWithListTemplate(sender_psid, data);
+      promptForLocation(sender_psid, "Select a location.");
     } else {
       if (sender_psid === BrandonID){ // send to Elaine
         sendTextMessage(BrandonID, "Got it, sending now");
@@ -183,7 +180,6 @@ function handleMessage(sender_psid, received_message) {
       } else if (intent.value === 'isHungry'){
         if (item && item.confidence > 0.8) {
           promptForLocation(sender_psid, "Select a location.");
-          // handleItem(item.value, sender_psid, 'isHungry');
         }
       }
     } else if (greetings && greetings.confidence > 0.8) {
@@ -194,7 +190,9 @@ function handleMessage(sender_psid, received_message) {
   } else if (received_message.attachments) {
     if (received_message.attachments[0].type === 'location'){
       let coordinates = received_message.attachments[0].payload.coordinates;
-      console.log(coordinates);
+      searchRequest.latitude = coordinates.lat;
+      searchRequest.longitude = coordinates.long;
+      sendYelpResults(sender_psid, searchRequest);
     }
   }
 }
