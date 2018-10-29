@@ -124,7 +124,7 @@ function handleMessage(sender_psid, received_message) {
         sendTextMessage(sender_psid, "Sorry, I don't know what you want.")
       }
     } else if (greetings && greetings.confidence > 0.8) {
-      sendTextMessage(sender_psid, "Hi, how can I help?")
+      sendTextWithQuickReplies(sender_psid, "Hi, how can I help?")
     } else {
       sendTextMessage(sender_psid, "Sorry, I do not understand.")
     }
@@ -148,6 +148,35 @@ function handlePostback(sender_psid, received_postback) {
   // callSendAPI(sender_psid, response);
 }
 
+function sendTextWithQuickReplies(recipientID, messageText){
+  var messageData = {
+    recipient: {
+      id: recipientID
+    },
+    message: {
+      text: messageText,
+      quick_replies: [
+        {
+          content_type: 'text',
+          title: 'ask for food',
+          payload: 'greetingPayload'
+        },
+        {
+          content_type: 'text',
+          title: 'ask for money',
+          payload: 'greetingPayload'
+        },
+        {
+          content_type: 'text',
+          title: 'send affection',
+          payload: 'greetingPayload'
+        }
+      ]
+    }
+  };
+
+  callSendAPI(messageData)
+}
 
 function sendTextMessage(recipientID, messageText){
   var messageData = {
