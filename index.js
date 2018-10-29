@@ -115,11 +115,13 @@ function searchNLP(nlp, name) {
 }
 
 function queryYelpFood(preferences) {
-  client.search(preferences).then(response =>{
-    const firstResult = response.jsonBody.businesses[0];
-    return resolve(firstResult.name)
-  }).catch(e => {
-    console.log(e);
+  return new Promise((resolve, reject) => {
+    client.search(preferences).then(response =>{
+      const firstResult = response.jsonBody.businesses[0];
+      return resolve(firstResult.name)
+    }).catch(e => {
+      console.log(e);
+    });
   });
 }
 
@@ -130,6 +132,7 @@ function handleItem(item, sender_psid){
   else if (item === 'love') message = "I love you Honey!"
   else if (item === 'yelpFood'){ // Special case
     message = queryYelpFood(searchRequest)
+    console.log(message);
   }
 
   if (sender_psid === BrandonID){ // send to Elaine
