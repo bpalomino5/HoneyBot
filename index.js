@@ -199,12 +199,12 @@ function sendWithListTemplate(recipientID, data) {
   data.forEach(item => {
     elements.push(
       {
-        title: data.name,
-        subtitle: data.categories[0].title,
-        image_url: data.image_url,
+        title: item.name,
+        subtitle: item.categories[0].title,
+        image_url: item.image_url,
         default_action: {
           type: 'web_url',
-          url: data.url,
+          url: item.url,
           messenger_extensions: false,
           webview_height_ratio: tall
         }
