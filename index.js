@@ -117,8 +117,7 @@ function searchNLP(nlp, name) {
 function queryYelpFood(preferences) {
   return new Promise((resolve, reject) => {
     client.search(preferences).then(response =>{
-      const firstResult = response.jsonBody.businesses[0];
-      return resolve(firstResult.name)
+      return resolve(response.jsonBody.businesses)
     }).catch(e => {
       console.log(e);
     });
@@ -131,12 +130,16 @@ async function handleItem(item, sender_psid){
   else if (item === 'money') message = "Honey I need money..."
   else if (item === 'love') message = "I love you Honey!"
   else if (item === 'yelpFood'){ // Special case
-    message = await queryYelpFood(searchRequest);
+    let data = await queryYelpFood(searchRequest);
   }
 
   if (sender_psid === BrandonID){ // send to Elaine
     sendTextMessage(BrandonID, "Got it, sending now");
-    sendTextMessage(BrandonID, message);
+    if (data){
+      sendWithListTemplate(BrandonID,data);
+    } else{
+      sendTextMessage(BrandonID, message);
+    }
   } else if (sender_psid === ElaineID){
     sendTextMessage(ElaineID, "Got it, sending now");
     sendTextMessage(BrandonID, message);
@@ -192,6 +195,42 @@ function handlePostback(sender_psid, received_postback) {
   }
   // Send the message to acknowledge the postback
   // callSendAPI(sender_psid, response);
+}
+
+function sendWithListTemplate(recipientID, data) {
+  let elements = [];
+  data.forEach(item => {
+    elements.push(
+      {
+        title: data.name,
+        subtitle: data.categories[0].title,
+        image_url: data.image_url,
+        default_action: {
+          type: 'web_url',
+          url: data.url,
+          messenger_extensions: false,
+          webview_height_ratio: tall
+        }
+    });
+  })
+
+  var messageData = {
+    recipient: {
+      id: recipientID
+    },
+    message: {
+      attachment: {
+        type: 'template',
+        payload: {
+          template_type: 'list',
+          top_element_style: 'compact',
+          elements: elements
+        }
+      }
+    }
+  };
+
+  callSendAPI(messageData);
 }
 
 function sendTextWithQuickReplies(recipientID, messageText){
