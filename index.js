@@ -132,7 +132,7 @@ function handleItem(item, sender_psid){
   else if (item === 'love') message = "I love you Honey!"
   else if (item === 'yelpFood'){ // Special case
     queryYelpFood(searchRequest).then(response => {
-      console.log(response);
+      message = response;
     })
   }
 
