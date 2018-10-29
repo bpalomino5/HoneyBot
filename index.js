@@ -90,11 +90,31 @@ function searchNLP(nlp, name) {
   }
 }
 
+function handleItem(item, sender_psid){
+  let message = ''
+  if (item === 'food') message = "Honey I'm hungry buy me food"
+  else if (item === 'money') message = "Honey I need money..."
+  else if (item === 'love') message = "I love you Honey!"
+
+  if (sender_psid === BrandonID){ // send to Elaine
+    sendTextMessage(BrandonID, "Got it, sending now");
+    sendTextMessage(BrandonID, message);
+  } else if (sender_psid === ElaineID){
+    sendTextMessage(ElaineID, "Got it, sending now");
+    sendTextMessage(BrandonID, message);
+  } else {
+    sendTextMessage(sender_psid, "Sorry, I don't know who to message.");
+  }
+}
+
 // Handles messages events
 function handleMessage(sender_psid, received_message) {
-  // Check if the message contains text
-  console.log(received_message);
-  if (received_message.text) {
+  if (received_message.quick_reply) {
+    let payload = received_message.quick_reply.payload;
+    handleItem(payload, sender_psid)
+  }
+  
+  else if (received_message.text) {
     let nlp = received_message.nlp;
     const intent = searchNLP(nlp, 'intent');
     const greetings = searchNLP(nlp, 'greetings');
@@ -104,20 +124,7 @@ function handleMessage(sender_psid, received_message) {
     if (intent && intent.confidence > 0.8 && intent.value === 'notify'){
       if (item && item.confidence > 0.8){
         if (person && person.confidence > 0.8) {
-          let message = '';
-          if (item.value === 'food') message = "Honey I'm hungry buy me food";
-          else if (item.value === 'money') message = "Honey I need money...";
-          else if (item.value === 'love') message = 'I love you Honey!';
-
-          if (sender_psid === BrandonID){ // send to Elaine
-            sendTextMessage(BrandonID, "Got it, sending now");
-            sendTextMessage(BrandonID, message);
-          } else if (sender_psid === ElaineID){
-            sendTextMessage(ElaineID, "Got it, sending now");
-            sendTextMessage(BrandonID, message);
-          } else {
-            sendTextMessage(sender_psid, "Sorry, I don't know who to message.");
-          }
+          handleItem(item.value, sender_psid);
         } else {
           sendTextMessage(sender_psid, "Sorry, I don't know who to message.");
         }
@@ -159,18 +166,18 @@ function sendTextWithQuickReplies(recipientID, messageText){
       quick_replies: [
         {
           content_type: 'text',
-          title: 'tell honey I want food',
-          payload: 'greetingPayload'
+          title: 'ask for food',
+          payload: 'food'
         },
         {
           content_type: 'text',
-          title: 'tell honey I need money',
-          payload: 'greetingPayload'
+          title: 'ask for money',
+          payload: 'money'
         },
         {
           content_type: 'text',
-          title: 'tell honey I love you',
-          payload: 'greetingPayload'
+          title: 'send affection',
+          payload: 'love'
         }
       ]
     }
