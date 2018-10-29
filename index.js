@@ -221,7 +221,7 @@ function sendWithListTemplate(recipientID, data) {
         payload: {
           template_type: 'list',
           top_element_style: 'compact',
-          elements: elements
+          elements: JSON.stringify(elements)
         }
       }
     }
