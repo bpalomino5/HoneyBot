@@ -131,15 +131,12 @@ async function handleItem(item, sender_psid){
   else if (item === 'love') message = "I love you Honey!"
   else if (item === 'yelpFood'){ // Special case
     let data = await queryYelpFood(searchRequest);
+    sendWithListTemplate(BrandonID,data);
   }
 
   if (sender_psid === BrandonID){ // send to Elaine
     sendTextMessage(BrandonID, "Got it, sending now");
-    if (data){
-      sendWithListTemplate(BrandonID,data);
-    } else{
-      sendTextMessage(BrandonID, message);
-    }
+    sendTextMessage(BrandonID, message);
   } else if (sender_psid === ElaineID){
     sendTextMessage(ElaineID, "Got it, sending now");
     sendTextMessage(BrandonID, message);
