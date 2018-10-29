@@ -227,6 +227,8 @@ function sendWithListTemplate(recipientID, data) {
     }
   };
 
+  console.log(messageData);
+
   callSendAPI(messageData);
 }
 
