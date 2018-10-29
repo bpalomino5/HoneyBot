@@ -127,7 +127,7 @@ function queryYelpFood(preferences) {
 async function handleItem(item, sender_psid, type=""){
   if (type === 'isHungry') {
     let data = await queryYelpFood(searchRequest);
-    sentTextMessage(sender_psid, "Here is your best choices!")
+    sendTextMessage(sender_psid, "Here is your best choices!")
     sendWithListTemplate(sender_psid, data);
   }
 
@@ -139,7 +139,7 @@ async function handleItem(item, sender_psid, type=""){
     
     if (item === 'yelpFood'){ // Special case
       let data = await queryYelpFood(searchRequest);
-      sentTextMessage(sender_psid, "Here is your best choices!")
+      sendTextMessage(sender_psid, "Here is your best choices!")
       sendWithListTemplate(sender_psid, data);
     } else {
       if (sender_psid === BrandonID){ // send to Elaine
