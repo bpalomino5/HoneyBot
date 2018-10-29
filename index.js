@@ -117,7 +117,7 @@ function searchNLP(nlp, name) {
 function queryYelpFood(preferences) {
   client.search(preferences).then(response =>{
     const firstResult = response.jsonBody.businesses[0];
-    return firstResult.name
+    return resolve(firstResult.name)
   }).catch(e => {
     console.log(e);
   });
