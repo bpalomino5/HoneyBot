@@ -125,15 +125,13 @@ function queryYelpFood(preferences) {
   });
 }
 
-function handleItem(item, sender_psid){
+async function handleItem(item, sender_psid){
   let message = ''
   if (item === 'food') message = "Honey I'm hungry buy me food"
   else if (item === 'money') message = "Honey I need money..."
   else if (item === 'love') message = "I love you Honey!"
   else if (item === 'yelpFood'){ // Special case
-    queryYelpFood(searchRequest).then(response => {
-      message = response;
-    })
+    message = await queryYelpFood(searchRequest);
   }
 
   if (sender_psid === BrandonID){ // send to Elaine
