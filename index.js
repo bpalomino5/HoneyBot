@@ -30,7 +30,7 @@ app.post('/webhook', (req, res) => {
 
       // Gets the body of the webhook event
       let webhook_event = entry.messaging[0];
-      console.log(webhook_event);
+      // console.log(webhook_event);
 
       // Get the sender PSID
       let sender_psid = webhook_event.sender.id;
@@ -82,57 +82,53 @@ app.get('/webhook', (req, res) => {
   }
 });
 
-
-function firstEntity(nlp, name) {
-  return nlp && nlp.entities && nlp.entities[name] && nlp.entities[name][0];
+function searchNLP(nlp, name) {
+  if (nlp.entities[name]){
+    return nlp.entities[name][0];
+  } else{
+    // TODO: or remove
+  }
 }
 
 // Handles messages events
 function handleMessage(sender_psid, received_message) {
-  let response = {
-        "text": "Sorry I did not understand"
-      };
-
   // Check if the message contains text
   if (received_message.text) {
     let nlp = received_message.nlp;
+    const intent = searchNLP(nlp, 'intent');
+    const greeting = searchNLP(nlp, 'greetings');
+    const person = searchNLP(nlp, 'person');
+    const item = searchNLP(nlp, 'item');
 
-    // check intent is here and is confident
-    if (nlp.entities.intent && nlp.entities.intent[0].confidence > 0.8 && nlp.entities.intent[0].value === 'notify') {
-      // default response to sender
-      
-      // check for proper structure - item, person
-      if (nlp.entities.item && nlp.entities.item[0].confidence > 0.8){
-        response = {
-          "text" : "Got it, sending now!"
-        }
-        
-        let item = nlp.entities.item[0].value
-        if (item === "food") {
-          message = "Honey I'm hungry buy me food!"
-        } else if(item === "money"){
-          message = "Honey I need money..."
-        } else if(item === 'love'){
-          message = "I love you Honey!"
-        }
+    if (intent && intent.confidence > 0.8 && intent.value === 'notify'){
+      if (item && item.confidence > 0.8){
+        if (person && person.confidence > 0.8) {
+          let message = '';
+          if (item.value === 'food') message = "Honey I'm hungry buy me food";
+          else if (item value === 'money') message = "Honey I need money...";
+          else if (item.value === 'love') message = 'I love you Honey!';
 
-        if (nlp.entities.person && nlp.entities.person[0].confidence > 0.8){
-          let person = nlp.entities.person[0].value
-          if (person === "honey"){
-            callSendAPI(ElaineID, { "text": message })
-          } 
-          else {
-            response = {
-              "text": 'Nope!'
-            }
+          if (sender_psid === BrandonID){ // send to Elaine
+            sendTextMessage(BrandonID, "Got it, sending now");
+            sendTextMessage(BrandonID, message);
+          } else if (sender_psid === ElaineID){
+            sendTextMessage(ElaineID, "Got it, sending now");
+            sendTextMessage(BrandonID, message);
+          } else {
+            sendTextMessage(sender_psid, "Sorry, I don't know who to message.");
           }
+        } else {
+          sendTextMessage(sender_psid, "Sorry, I don't know who to message.");
         }
+      } else {
+        sendTextMessage(sender_psid, "Sorry, I don't know what you want.")
       }
+    } else if (greetings && greetings.confidence > 0.8) {
+      sendTextMessage(sender_psid, "Hi, how can I help?")
+    } else {
+      sendTextMessage(sender_psid, "Sorry, I do not understand.")
     }
   }
-
-  // Sends the response message
-  callSendAPI(sender_psid, response);
 }
 
 // Handles messaging_postbacks events
@@ -149,25 +145,31 @@ function handlePostback(sender_psid, received_postback) {
     response = { "text": "Oops, try sending another image." }
   }
   // Send the message to acknowledge the postback
-  callSendAPI(sender_psid, response);
+  // callSendAPI(sender_psid, response);
+}
+
+
+function sendTextMessage(recipientID, messageText){
+  var messageData = {
+    recipient: {
+      id: recipientID
+    },
+    message: {
+      text: messageText
+    }
+  };
+
+  callSendAPI(messageData)
 }
 
 // Sends response messages via the Send API
-function callSendAPI(sender_psid, response) {
-  // Construct the message body
-  let request_body = {
-    "recipient": {
-      "id": sender_psid
-    },
-    "message": response
-  }
-
+function callSendAPI(messageData) {
   // Send the HTTP request to the Messenger Platform
   request({
     "uri": "https://graph.facebook.com/v2.6/me/messages",
     "qs": { "access_token": PAGE_ACCESS_TOKEN },
     "method": "POST",
-    "json": request_body
+    "json": messageData
   }, (err, res, body) => {
     if (!err) {
       console.log('message sent! ')
