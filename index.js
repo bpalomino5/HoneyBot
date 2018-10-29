@@ -131,7 +131,7 @@ async function handleItem(item, sender_psid){
   else if (item === 'love') message = "I love you Honey!"
   else if (item === 'yelpFood'){ // Special case
     let data = await queryYelpFood(searchRequest);
-    sendWithListTemplate(BrandonID,data);
+    sendWithListTemplate(BrandonID, data);
   }
 
   if (sender_psid === BrandonID){ // send to Elaine
@@ -221,7 +221,7 @@ function sendWithListTemplate(recipientID, data) {
         payload: {
           template_type: 'list',
           top_element_style: 'compact',
-          elements: JSON.stringify(elements)
+          elements: elements
         }
       }
     }
@@ -229,7 +229,7 @@ function sendWithListTemplate(recipientID, data) {
 
   console.log(messageData.message.attachment.payload.elements);
 
-  callSendAPI(messageData);
+  callSendAPI(JSON.stringify(messageData));
 }
 
 function sendTextWithQuickReplies(recipientID, messageText){
