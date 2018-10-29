@@ -93,6 +93,7 @@ function searchNLP(nlp, name) {
 // Handles messages events
 function handleMessage(sender_psid, received_message) {
   // Check if the message contains text
+  console.log(received_message.payload);
   if (received_message.text) {
     let nlp = received_message.nlp;
     const intent = searchNLP(nlp, 'intent');
@@ -158,17 +159,17 @@ function sendTextWithQuickReplies(recipientID, messageText){
       quick_replies: [
         {
           content_type: 'text',
-          title: 'ask for food',
+          title: 'tell honey I want food',
           payload: 'greetingPayload'
         },
         {
           content_type: 'text',
-          title: 'ask for money',
+          title: 'tell honey I need money',
           payload: 'greetingPayload'
         },
         {
           content_type: 'text',
-          title: 'send affection',
+          title: 'tell honey I love you',
           payload: 'greetingPayload'
         }
       ]
