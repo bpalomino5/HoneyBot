@@ -105,7 +105,7 @@ function handleMessage(sender_psid, received_message) {
         if (person && person.confidence > 0.8) {
           let message = '';
           if (item.value === 'food') message = "Honey I'm hungry buy me food";
-          else if (item value === 'money') message = "Honey I need money...";
+          else if (item.value === 'money') message = "Honey I need money...";
           else if (item.value === 'love') message = 'I love you Honey!';
 
           if (sender_psid === BrandonID){ // send to Elaine
