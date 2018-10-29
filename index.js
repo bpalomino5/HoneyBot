@@ -96,7 +96,7 @@ function handleMessage(sender_psid, received_message) {
   if (received_message.text) {
     let nlp = received_message.nlp;
     const intent = searchNLP(nlp, 'intent');
-    const greeting = searchNLP(nlp, 'greetings');
+    const greetings = searchNLP(nlp, 'greetings');
     const person = searchNLP(nlp, 'person');
     const item = searchNLP(nlp, 'item');
 
