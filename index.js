@@ -25,20 +25,8 @@ const searchRequest = {
 
 const client = yelp.client(YELP_API_KEY)
 
-
 // Sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
-
-// app.get('/', (req,res) => {
-//   client.search(searchRequest).then(response =>{
-//     const firstResult = response.jsonBody.businesses[0];
-//     console.log(firstResult.name, firstResult.url);
-//     // const prettyJson = JSON.stringify(firstResult);
-//     // console.log(prettyJson);
-//   }).catch(e => {
-//     console.log(e);
-//   });
-// });
 
 // Creates the endpoint for our webhook 
 app.post('/webhook', (req, res) => {  
