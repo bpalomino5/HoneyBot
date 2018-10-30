@@ -32,7 +32,29 @@ const helloMessage = {
     payload: {
       template_type: 'button',
       text: 'Hi, what can I do for you?',
-      buttons: [setPreferencesButton],
+      quick_replies: [
+        {
+          content_type: 'text',
+          title: 'ask for food',
+          payload: 'food'
+        },
+        {
+          content_type: 'text',
+          title: 'ask for money',
+          payload: 'money'
+        },
+        {
+          content_type: 'text',
+          title: 'send affection',
+          payload: 'love'
+        },
+        {
+          content_type: 'text',
+          title: 'find food',
+          payload: 'yelpFood'
+        }
+      ]
+      // buttons: [setPreferencesButton],
     },
   },
 };
