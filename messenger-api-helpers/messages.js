@@ -55,15 +55,16 @@ const yelpFoodMessage = (restaurants) => {
   //       }
   //   });
   // });
-
-  attachment: {
-    type: 'template',
-    payload: {
-      template_type: 'list',
-      top_element_style: 'compact',
-      elements: listItems
+  return {
+    attachment: {
+      type: 'template',
+      payload: {
+        template_type: 'list',
+        top_element_style: 'compact',
+        elements: listItems
+      }
     }
-  }
+  };
 }
 
 const locationMessage = {
