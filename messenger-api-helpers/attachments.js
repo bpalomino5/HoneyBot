@@ -18,7 +18,7 @@ const queryYelpFood = (preferences) => {
   });
 }
 
-const  sendYelpResults = async (senderId, preferences) => {
+const sendYelpResults = async (senderId, preferences) => {
   let yelpData = await queryYelpFood(preferences);
   sendApi.sendSimpleMessage(senderId, "Here is your best choices!");
   // sendTextMessage(sender_psid, "Here is your best choices!")
