@@ -26,13 +26,10 @@ const setPreferencesButton = {
  * Message that informs the user of the promotion and prompts
  * them to set their preferences.
  */
+
 const helloMessage = {
-  attachment: {
-    type: 'template',
-    payload: {
-      template_type: 'button',
-      text: 'Hi, what can I do for you?',
-      quick_replies: [
+  text: 'Hi, what can I do for you?',
+  quick_replies: [
         {
           content_type: 'text',
           title: 'ask for food',
@@ -54,10 +51,18 @@ const helloMessage = {
           payload: 'yelpFood'
         }
       ]
-      // buttons: [setPreferencesButton],
-    },
-  },
 };
+
+// const helloMessage = {
+//   attachment: {
+//     type: 'template',
+//     payload: {
+//       template_type: 'button',
+//       text: 'Hi, what can I do for you?',
+//       // buttons: [setPreferencesButton],
+//     },
+//   },
+// };
 
 /**
  * The persistent menu for users to use.
