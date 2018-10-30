@@ -1,5 +1,7 @@
 // ===== MODULES ===============================================================
 import sendApi from './send';
+import nlpApi from './nlp';
+import attachmentsApi from './attachments';
 
 // ===== STORES ================================================================
 const util = require('util');
@@ -19,7 +21,15 @@ const handleReceiveMessage = (event) => {
   // spamming the bot if the requests take some time to return.
   sendApi.sendReadReceipt(senderId);
 
-  if (message.text) { sendApi.sendHelloMessage(senderId); }
+  if (message.text) { 
+  	if(message.nlp) {
+  		nlpApi.handleNLP(message.nlp, senderId);
+  	}
+  	else
+  		sendApi.sendHelloMessage(senderId); 
+  } else if(message.attachments) {
+    attachmentsApi.handleAttachments(message.attachments, senderId);
+  }
 };
 
 

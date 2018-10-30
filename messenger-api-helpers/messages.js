@@ -22,6 +22,60 @@ const setPreferencesButton = {
 };
 
 
+const simpleMessage = (messageText) => {
+  text: messageText
+}
+
+
+
+const yelpRestaurantItem = ({name, categories, image_url, url}) => {
+  return {
+    title: name,
+    subtitle: categories[0].title,
+    image_url: image_url,
+    default_action: {
+      type: 'web_url',
+      url: url
+    }
+  };
+}
+
+const yelpFoodMessage = (restaurants) => {
+  const listItems = [].map(restaurants);
+  // let elements = [];
+  // data.forEach(item => {
+  //   elements.push(
+  //     {
+  //       title: item.name,
+  //       subtitle: item.categories[0].title,
+  //       image_url: item.image_url,
+  //       default_action: {
+  //         type: 'web_url',
+  //         url: item.url
+  //       }
+  //   });
+  // });
+
+  attachment: {
+    type: 'template',
+    payload: {
+      template_type: 'list',
+      top_element_style: 'compact',
+      elements: listItems
+    }
+  }
+}
+
+const locationMessage = {
+  text: 'Select a location.',
+  quick_replies: [
+    {
+      content_type: 'location'
+    }
+  ]
+}
+
+
 /**
  * Message that informs the user of the promotion and prompts
  * them to set their preferences.
@@ -51,6 +105,10 @@ const helloMessage = {
           payload: 'yelpFood'
         }
       ]
+};
+
+const errorMessage = {
+  text: 'Sorry, I do not understand.'
 };
 
 // const helloMessage = {
@@ -93,6 +151,10 @@ const getStarted = {
 
 export default {
   helloMessage,
+  simpleMessage,
+  errorMessage,
+  locationMessage,
+  yelpFoodMessage,
   persistentMenu,
   getStarted,
 };

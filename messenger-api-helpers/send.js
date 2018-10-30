@@ -62,13 +62,37 @@ const sendReadReceipt = (recipientId) => {
 
 // Send the initial message telling the user about the promotion.
 const sendHelloMessage = (recipientId) => {
-  logger.fbLog("send_message", {payload: "greetings"}, recipientId);
+  logger.fbLog("send_message", {payload: "hello"}, recipientId);
   sendMessage(recipientId, messages.helloMessage);
 };
+
+const sendLocationMessage = (recipientId) => {
+  logger.fbLog("send_message", {payload: "location"}, recipientId);
+  sendMessage(recipientId, messages.locationMessage);
+}
+
+const sendErrorMessage = (recipientId) => {
+  logger.fbLog("send_message", {payload: "error"}, recipientId);
+  sendMessage(recipientId, messages.errorMessage);
+}
+
+const sendSimpleMessage = (recipientId, messageText) => {
+  logger.fbLog("send_message", {payload: "simple"}, recipientId);
+  sendMessage(recipientId, messages.simpleMessage(messageText));
+}
+
+const sendYelpMessage = (recipientId, yelpData) => {
+  logger.fbLog("send_message", {payload: "yelp"}, recipientId);
+  sendMessage(recipientId, messages.yelpFoodMessage(yelpData));
+}
 
 
 export default {
   sendMessage,
   sendReadReceipt,
   sendHelloMessage,
+  sendLocationMessage,
+  sendErrorMessage,
+  sendSimpleMessage,
+  sendYelpMessage,
 };
