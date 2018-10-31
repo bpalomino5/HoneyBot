@@ -23,7 +23,7 @@ const setPreferencesButton = {
 
 
 const simpleMessage = ({ messageText }) => {
-  console.log(messageText);
+  console.log("at simpleMessage:",messageText);
   return {
     text: messageText,
   };

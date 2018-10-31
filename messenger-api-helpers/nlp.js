@@ -15,6 +15,7 @@ const handleItem = (item, senderId) => {
     // promptForLocation(sender_psid, "Select a location.");
   } else {
     if (senderId === BrandonID){ // send to Elaine
+    	console.log("at handleItem:",senderId,message);
     	sendApi.sendSimpleMessage(senderId, "Got it, sending now");
     	sendApi.sendSimpleMessage(BrandonID, message);
       // sendTextMessage(BrandonID, "Got it, sending now");
