@@ -23,13 +23,9 @@ const queryYelpFood = (preferences) => {
 }
 
 const sendYelpResults = async (senderId, preferences) => {
-  console.log("sendYelpResults", preferences);
   let yelpData = await queryYelpFood(preferences);
-  console.log(yelpData);
   sendApi.sendSimpleMessage(senderId, "Here is your best choices!");
-  // sendTextMessage(sender_psid, "Here is your best choices!")
   sendApi.sendYelpMessage(senderId, yelpData);
-  // sendWithListTemplate(sender_psid, data);
 }
 
 const searchAttachments = (attachments, name) => {
@@ -39,9 +35,7 @@ const searchAttachments = (attachments, name) => {
 }
 
 const handleAttachments = (attachments, senderId) => {
-  console.log("handleAttachments", attachments);
 	const location = searchAttachments(attachments, 'location');
-  console.log("location object:",location);
 
   if (location){
   	preferences.latitude = location.payload.coordinates.lat;

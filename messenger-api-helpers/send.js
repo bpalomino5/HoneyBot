@@ -77,7 +77,6 @@ const sendErrorMessage = (recipientId) => {
 }
 
 const sendSimpleMessage = (recipientId, messageText) => {
-  // console.log("at sendSimpleMessage:",messageText);
   logger.fbLog("send_message", {payload: "simple"}, recipientId);
   sendMessage(recipientId, messages.simpleMessage(messageText));
 }

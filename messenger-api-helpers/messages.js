@@ -23,7 +23,6 @@ const setPreferencesButton = {
 
 
 const simpleMessage = (messageText) => {
-  // console.log("at simpleMessage:", messageText);
   return {
     text: messageText,
   };
@@ -42,10 +41,8 @@ const yelpRestaurantItem = ({name, categories, image_url, url}) => {
 }
 
 const yelpFoodMessage = (restaurants) => {
-  console.log("yelpFoodMessage", restaurants);
   const listItems = restaurants.map(yelpRestaurantItem);
-  console.log(listItems);
-  
+
   return {
     attachment: {
       type: 'template',
