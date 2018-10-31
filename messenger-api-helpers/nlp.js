@@ -1,6 +1,9 @@
 // ===== MODULES ===============================================================
 import sendApi from './send';
 
+const BrandonID = process.env.BrandonID;
+const ElaineID = process.env.ElaineID;
+
 const handleItem = (item, senderId) => {
   let message = ''
   if (item === 'food') message = "Honey I'm hungry buy me food"
@@ -40,7 +43,7 @@ const searchNLP = (nlp, name) => {
 const handleNLP = (nlp, senderId) => {
 	const intent = searchNLP(nlp, 'intent');
   const greetings = searchNLP(nlp, 'greetings');
-  const person = searchNLP(nlp, 'person');
+  // const person = searchNLP(nlp, 'person');
   const item = searchNLP(nlp, 'item');
 
   if (intent && intent.confidence > 0.8){

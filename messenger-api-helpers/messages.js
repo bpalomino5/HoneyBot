@@ -42,19 +42,7 @@ const yelpRestaurantItem = ({name, categories, image_url, url}) => {
 
 const yelpFoodMessage = (restaurants) => {
   const listItems = [].map(restaurants);
-  // let elements = [];
-  // data.forEach(item => {
-  //   elements.push(
-  //     {
-  //       title: item.name,
-  //       subtitle: item.categories[0].title,
-  //       image_url: item.image_url,
-  //       default_action: {
-  //         type: 'web_url',
-  //         url: item.url
-  //       }
-  //   });
-  // });
+
   return {
     attachment: {
       type: 'template',

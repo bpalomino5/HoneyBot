@@ -34,5 +34,5 @@ const handleReceiveMessage = (event) => {
 
 
 export default {
-  handleReceiveMessage
+  handleReceiveMessage,
 };
