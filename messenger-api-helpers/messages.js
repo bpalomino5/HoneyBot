@@ -42,8 +42,10 @@ const yelpRestaurantItem = ({name, categories, image_url, url}) => {
 }
 
 const yelpFoodMessage = (restaurants) => {
+  console.log("yelpFoodMessage", restaurants);
   const listItems = restaurants.map(yelpRestaurantItem);
-
+  console.log(listItems);
+  
   return {
     attachment: {
       type: 'template',
