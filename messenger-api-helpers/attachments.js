@@ -1,5 +1,9 @@
 // ===== MODULES ===============================================================
 import sendApi from './send';
+import yelp from 'yelp-fusion';
+
+const YELP_API_KEY = process.env.YELP_API_KEY
+const client = yelp.client(YELP_API_KEY)
 
 const preferences = {
   term: 'restaurants',

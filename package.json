@@ -39,7 +39,8 @@
     "serve-favicon": "~2.4.2",
     "style-loader": "^0.23.1",
     "uglify-loader": "^3.0.0",
-    "webpack": "^4.23.1"
+    "webpack": "^4.23.1",
+    "yelp-fusion": "^2.2.1"
   },
   "devDependencies": {
     "babel-preset-env": "^1.7.0",
