@@ -33,11 +33,9 @@ const sendYelpResults = async (senderId, preferences) => {
 }
 
 const searchAttachments = (attachments, name) => {
-	attachments.forEach(item => {
-		if (item.type === name){
-			return item;
-		}
-	});
+  attachments.find(item => {
+    return item.type === name
+  });
 }
 
 const handleAttachments = (attachments, senderId) => {
