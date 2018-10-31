@@ -41,7 +41,9 @@ const searchAttachments = (attachments, name) => {
 }
 
 const handleAttachments = (attachments, senderId) => {
+  console.log("handleAttachments", attachments);
 	const location = searchAttachments(attachments, 'location');
+  console.log("location object:",location);
 
   if (location){
   	preferences.latitude = location.payload.coordinates.lat;
