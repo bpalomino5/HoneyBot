@@ -22,8 +22,11 @@ const setPreferencesButton = {
 };
 
 
-const simpleMessage = ({messageText}) => {
-  text: messageText
+const simpleMessage = ({ messageText }) => {
+  console.log(messageText);
+  return {
+    text: messageText,
+  };
 };
 
 const yelpRestaurantItem = ({name, categories, image_url, url}) => {
