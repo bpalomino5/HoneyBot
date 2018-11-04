@@ -1,6 +1,8 @@
 /* eslint-disable react/react-in-jsx-scope */
 import React from "react";
 import WebviewControls from "../messenger-api-helpers/webview-controls";
+import UserStore from "../stores/user-store";
+
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
@@ -17,6 +19,22 @@ import MenuItem from "@material-ui/core/MenuItem";
 
 export default class App extends React.Component {
   state = { sortOption: "best_match", openSwitch: true, term: "restaurants" };
+
+  componentDidMount = () => {
+    if (this.props.userId) {
+      let user = UserStore.get(this.props.userId);
+      if (user) {
+        let preferences = user.getPreferences();
+        this.setState({
+          sortOption: preferences.sortOption,
+          openSwitch: preferences.checked,
+          term: preferences.term
+        });
+      } else {
+        UserStore.insert(this.props.userId);
+      }
+    }
+  };
 
   handleSortChange = event => {
     this.setState({ sortOption: event.target.value });
