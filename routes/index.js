@@ -1,9 +1,9 @@
-import express from 'express';
+import express from "express";
 const router = express.Router();
 
 /* GET home page. */
-router.get('/', (_, res)  => {
-  res.render('./index', { title: 'React APP' });
+router.get("/", (_, res) => {
+  res.render("./index", { title: "Preferences" });
 });
 
 export default router;

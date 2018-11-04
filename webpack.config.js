@@ -1,5 +1,4 @@
 /* eslint-disable */
-/* eslint-disable */
 var path = require('path');
 const webpack = require('webpack');
 
