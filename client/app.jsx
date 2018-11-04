@@ -27,7 +27,7 @@ export default class App extends React.Component {
         let preferences = user.getPreferences();
         this.setState({
           sortOption: preferences.sortOption,
-          openSwitch: preferences.checked,
+          openSwitch: preferences.isOpen,
           term: preferences.term
         });
       } else {
@@ -49,6 +49,11 @@ export default class App extends React.Component {
   };
 
   handleSubmit = () => {
+    // save preferences
+    let user = UserStore.get(this.props.userId);
+    if (user) {
+      user.setPreferences({ sortOption, isOpen: openSwitch, term });
+    }
     WebviewControls.close();
   };
 

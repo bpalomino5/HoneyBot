@@ -29,4 +29,15 @@ export default class User {
     this.isOpen = isOpen;
     this.term = term;
   }
+
+  getPreferences() {
+    const { sortOption, isOpen, term } = this;
+    return { sortOption, isOpen, term };
+  }
+
+  setPreferences(preferences) {
+    this.sortOption = preferences.sortOption;
+    this.isOpen = preferences.isOpen;
+    this.term = preferences.term;
+  }
 }
